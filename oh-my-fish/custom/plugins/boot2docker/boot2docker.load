@@ -1,0 +1,16 @@
+printf "boot2docker container is "
+switch (boot2docker status)
+    case running
+        set_color green
+        echo "running"
+        set_color normal
+        for _ in (boot2docker shellinit 2>/dev/null)
+            echo $_ | sed 's/-x/-gx/' | source
+        end
+    case aborted poweroff
+        set_color red
+        echo "not running"
+        set_color normal
+    case '*'
+        # unknown return
+end
